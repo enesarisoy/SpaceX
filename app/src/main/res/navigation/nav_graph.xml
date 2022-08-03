@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/rocketsFragment">
+
+    <fragment
+        android:id="@+id/rocketsFragment"
+        android:name="com.ns.spacex.ui.home.rockets.RocketsFragment"
+        android:label="fragment_rockets"
+        tools:layout="@layout/fragment_rockets" >
+        <action
+            android:id="@+id/action_rocketsFragment_to_rocketDetailFragment"
+            app:destination="@id/rocketDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteRocketsFragment"
+        android:name="com.ns.spacex.ui.home.favorite_rockets.FavoriteRocketsFragment"
+        android:label="fragment_favorite_rockets"
+        tools:layout="@layout/fragment_favorite_rockets" >
+        <action
+            android:id="@+id/action_favoriteRocketsFragment_to_rocketDetailFragment"
+            app:destination="@id/rocketDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/upcomingLaunchesFragment"
+        android:name="com.ns.spacex.ui.home.upcoming_launches.UpcomingLaunchesFragment"
+        android:label="fragment_upcoming_launches"
+        tools:layout="@layout/fragment_upcoming_launches" >
+        <action
+            android:id="@+id/action_upcomingLaunchesFragment_to_launchDetailFragment"
+            app:destination="@id/launchDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/launchDetailFragment"
+        android:name="com.ns.spacex.ui.home.launch_detail.LaunchDetailFragment"
+        android:label="fragment_launch_detail"
+        tools:layout="@layout/fragment_launch_detail" />
+    <fragment
+        android:id="@+id/rocketDetailFragment"
+        android:name="com.ns.spacex.ui.home.rocket_detail.RocketDetailFragment"
+        android:label="fragment_rocket_detail"
+        tools:layout="@layout/fragment_rocket_detail" >
+        <argument
+            android:name="roket"
+            app:argType="com.ns.spacex.model.Rockets"
+            app:nullable="true"
+            android:defaultValue="@null"
+            />
+    </fragment>
+</navigation>

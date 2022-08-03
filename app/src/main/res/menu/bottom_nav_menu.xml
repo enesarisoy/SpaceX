@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/rocketsFragment"
+        android:icon="@drawable/ic_bottom_rockets"
+        android:menuCategory="secondary"
+        android:title="@string/rockets" />
+
+    <item
+        android:id="@+id/favoriteRocketsFragment"
+        android:icon="@drawable/ic_bottom_favorite"
+        android:menuCategory="secondary"
+        android:title="@string/favorites" />
+
+    <item
+        android:id="@+id/upcomingLaunchesFragment"
+        android:icon="@drawable/ic_bottom_launches"
+        android:menuCategory="secondary"
+        android:title="@string/launches" />
+
+</menu>
