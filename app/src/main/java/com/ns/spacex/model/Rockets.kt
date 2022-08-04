@@ -1,12 +1,17 @@
 package com.ns.spacex.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
-//@Parcelize
+@Parcelize
+@Entity(tableName = "rockets")
 data class Rockets(
+    @PrimaryKey(autoGenerate = true)
+    var num: Int? = null,
     val name: String?,
     val description: String?,
     val id: String,
@@ -14,13 +19,13 @@ data class Rockets(
     @SerializedName("first_flight")
     val firstFlight: String?,
     @SerializedName("flickr_images")
-    val flickrImages: List<String>
-): Serializable {
-    override fun hashCode(): Int {
+    val flickrImages: ArrayList<String>
+) : Parcelable {
+   /* override fun hashCode(): Int {
         var result = id.hashCode()
-        if(id.isNullOrEmpty()){
+        if (id.isNullOrEmpty()) {
             result = 31 * result + id.hashCode()
         }
         return result
-    }
+    }*/
 }

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_favoriteRocketsFragment_to_rocketDetailFragment"
             app:destination="@id/rocketDetailFragment" />
+        <argument
+            android:name="rocket"
+            app:argType="com.ns.spacex.model.Rockets" />
     </fragment>
     <fragment
         android:id="@+id/upcomingLaunchesFragment"
@@ -36,7 +39,11 @@
         android:id="@+id/launchDetailFragment"
         android:name="com.ns.spacex.ui.home.launch_detail.LaunchDetailFragment"
         android:label="fragment_launch_detail"
-        tools:layout="@layout/fragment_launch_detail" />
+        tools:layout="@layout/fragment_launch_detail" >
+        <argument
+            android:name="upcoming"
+            app:argType="com.ns.spacex.model.upcoming_launches.UpcomingLaunchesModel" />
+    </fragment>
     <fragment
         android:id="@+id/rocketDetailFragment"
         android:name="com.ns.spacex.ui.home.rocket_detail.RocketDetailFragment"
@@ -45,8 +52,10 @@
         <argument
             android:name="roket"
             app:argType="com.ns.spacex.model.Rockets"
-            app:nullable="true"
             android:defaultValue="@null"
-            />
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_rocketDetailFragment_to_favoriteRocketsFragment"
+            app:destination="@id/favoriteRocketsFragment" />
     </fragment>
 </navigation>

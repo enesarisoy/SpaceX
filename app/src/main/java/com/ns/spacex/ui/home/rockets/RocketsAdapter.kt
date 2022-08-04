@@ -1,16 +1,18 @@
 package com.ns.spacex.ui.home.rockets
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ns.spacex.databinding.ItemRocketsBinding
 import com.ns.spacex.model.Rockets
 import com.ns.spacex.util.downloadImage
 
-class RocketsAdapter(private val rockets: ArrayList<Rockets>) :
+class RocketsAdapter(private val rockets: ArrayList<Rockets>, private val favoriClick: FavoriClickInterface) :
     RecyclerView.Adapter<RocketsAdapter.RocketsViewHolder>() {
+
+
     inner class RocketsViewHolder(val binding: ItemRocketsBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -30,9 +32,16 @@ class RocketsAdapter(private val rockets: ArrayList<Rockets>) :
         holder.binding.apply {
             textName.text = rockets.name
             imgRocket.downloadImage(rockets.flickrImages[0])
+            btnFavorite.setOnClickListener {
+                favoriClick.onClickFavorite(rockets)
+                Log.e("denem","asdsad")
+            }
             holder.itemView.setOnClickListener {
                 onItemClickListener?.let { it(rockets) }
+
             }
+
+
         }
     }
 
@@ -45,9 +54,12 @@ class RocketsAdapter(private val rockets: ArrayList<Rockets>) :
         }
     }
 
+
     private var onItemClickListener: ((Rockets) -> Unit)? = null
 
     fun setOnItemClickListener(listener: (Rockets) -> Unit) {
         onItemClickListener = listener
     }
+
+
 }
