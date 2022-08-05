@@ -51,9 +51,7 @@
         tools:layout="@layout/fragment_rocket_detail" >
         <argument
             android:name="roket"
-            app:argType="com.ns.spacex.model.Rockets"
-            android:defaultValue="@null"
-            app:nullable="true" />
+            app:argType="com.ns.spacex.model.Rockets" />
         <action
             android:id="@+id/action_rocketDetailFragment_to_favoriteRocketsFragment"
             app:destination="@id/favoriteRocketsFragment" />

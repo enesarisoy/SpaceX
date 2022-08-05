@@ -7,8 +7,9 @@ import com.ns.spacex.util.Resource
 import kotlinx.coroutines.Dispatchers
 
 class UpcomingLaunchesViewModel(
-    private val repository: SpaceXRepository
 ) : ViewModel() {
+
+    private val repository: SpaceXRepository = SpaceXRepository()
 
     init {
         getUpcomingLaunches()

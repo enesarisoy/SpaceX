@@ -7,8 +7,9 @@ import com.ns.spacex.util.Resource
 import kotlinx.coroutines.Dispatchers
 
 class LaunchDetailViewModel(
-    private val repository: SpaceXRepository
 ): ViewModel() {
+
+    private val repository: SpaceXRepository = SpaceXRepository()
     fun getLaunchDetail(id: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {

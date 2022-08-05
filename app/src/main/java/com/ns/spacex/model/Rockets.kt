@@ -19,13 +19,7 @@ data class Rockets(
     @SerializedName("first_flight")
     val firstFlight: String?,
     @SerializedName("flickr_images")
-    val flickrImages: ArrayList<String>
+    val flickrImages: ArrayList<String>,
+    var isLiked: Boolean = false
 ) : Parcelable {
-   /* override fun hashCode(): Int {
-        var result = id.hashCode()
-        if (id.isNullOrEmpty()) {
-            result = 31 * result + id.hashCode()
-        }
-        return result
-    }*/
 }

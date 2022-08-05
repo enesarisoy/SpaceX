@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ns.spacex.R
 import com.ns.spacex.databinding.FragmentUpcomingLaunchesBinding
 import com.ns.spacex.model.upcoming_launches.UpcomingLaunchesModel
+import com.ns.spacex.ui.home.rockets.RocketsFragmentDirections
 import com.ns.spacex.util.Status
 
 
@@ -30,12 +31,9 @@ class UpcomingLaunchesFragment : Fragment(R.layout.fragment_upcoming_launches) {
         setupRecyclerView()
 
         launchesAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-               putSerializable("upcoming",it)
-            }
+
             findNavController().navigate(
-                R.id.action_upcomingLaunchesFragment_to_launchDetailFragment,
-                bundle
+                UpcomingLaunchesFragmentDirections.actionUpcomingLaunchesFragmentToLaunchDetailFragment(it)
             )
         }
 

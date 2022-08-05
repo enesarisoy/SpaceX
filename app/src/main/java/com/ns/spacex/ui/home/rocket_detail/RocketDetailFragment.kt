@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -59,7 +60,7 @@ class RocketDetailFragment : Fragment(R.layout.fragment_rocket_detail) {
 
         binding.btnFavorite.setOnClickListener {
             viewModel.saveRocket(args.roket!!)
-            binding.btnFavorite.setBackgroundColor(resources.getColor(R.color.black))
+            binding.btnFavorite.setColorFilter(ResourcesCompat.getColor(resources, R.color.black, null))
             Snackbar.make(view, "Rocket saved!", Snackbar.LENGTH_LONG).show()
 
         }

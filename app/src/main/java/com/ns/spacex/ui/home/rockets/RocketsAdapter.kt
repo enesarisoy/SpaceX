@@ -4,12 +4,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.ns.spacex.R
 import com.ns.spacex.databinding.ItemRocketsBinding
 import com.ns.spacex.model.Rockets
 import com.ns.spacex.util.downloadImage
 
-class RocketsAdapter(private val rockets: ArrayList<Rockets>, private val favoriClick: FavoriClickInterface) :
+//TODO(change list with diffutils)
+class RocketsAdapter(
+    private val rockets: ArrayList<Rockets>,
+    private val favoriClick: FavoriClickInterface
+) :
     RecyclerView.Adapter<RocketsAdapter.RocketsViewHolder>() {
 
 
@@ -34,7 +40,15 @@ class RocketsAdapter(private val rockets: ArrayList<Rockets>, private val favori
             imgRocket.downloadImage(rockets.flickrImages[0])
             btnFavorite.setOnClickListener {
                 favoriClick.onClickFavorite(rockets)
-                Log.e("denem","asdsad")
+                Log.e("Adapter", rockets.isLiked.toString())
+                if (rockets.isLiked) {
+                    btnFavorite.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            holder.itemView.context,
+                            R.drawable.ic_star_full
+                        )
+                    )
+                }
             }
             holder.itemView.setOnClickListener {
                 onItemClickListener?.let { it(rockets) }

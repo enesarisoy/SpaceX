@@ -1,13 +1,13 @@
 package com.ns.spacex.repository
 
-import androidx.room.RoomDatabase
-import com.ns.spacex.data.RocketDatabase
+import com.ns.spacex.data.RocketDao
 import com.ns.spacex.model.Rockets
 
-class RoomRepository(private val db: RocketDatabase) {
+class RoomRepository(private val dao: RocketDao) {
 
-    suspend fun upsertRocket(rockets: Rockets) = db.getRocketDao().upsert(rockets)
-    fun getSavedRockets() = db.getRocketDao().getAllRockets()
-    suspend fun deleteRocket(rockets: Rockets) = db.getRocketDao().deleteRocket(rockets)
+    suspend fun upsertRocket(rockets: Rockets) = dao.upsert(rockets)
+    fun getSavedRockets() = dao.getAllRockets()
+    suspend fun deleteRocket(rockets: Rockets) = dao.deleteRocket(rockets)
+//    fun checkFavorite(id: String) = dao.checkFavorite(id)
 
 }

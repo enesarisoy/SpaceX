@@ -29,14 +29,10 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
         setupRecyclerView()
 
         rocketsAdapter.setOnItemClickListener {
-
             findNavController().navigate(
                 RocketsFragmentDirections.actionRocketsFragmentToRocketDetailFragment(it)
-
             )
         }
-
-
 
 
 
@@ -46,17 +42,28 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
                     Status.SUCCESS -> {
                         resource.data?.let { rockets ->
                             retrieveList(rockets)
+                            setProgressBar(View.GONE)
                         }
                     }
                     Status.ERROR -> {
                         Log.e(TAG, it.message!!)
                     }
-                    Status.LOADING -> Log.e(TAG, "Loading")
+                    Status.LOADING -> {
+                        Log.e(TAG, "Loading")
+                        setProgressBar(View.VISIBLE)
+                    }
                 }
             }
         })
 
 
+
+    }
+
+
+
+    private fun setProgressBar(visibility: Int) {
+        binding.progressBar.visibility = visibility
     }
 
     private fun retrieveList(rockets: List<Rockets>) {
@@ -82,5 +89,6 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
 
     override fun onClickFavorite(rockets: Rockets) {
         viewModel.saveRocket(rockets)
+        rockets.isLiked = true
     }
 }

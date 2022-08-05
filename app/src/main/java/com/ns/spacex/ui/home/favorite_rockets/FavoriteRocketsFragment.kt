@@ -36,30 +36,30 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
             retrieveList(it)
 
             //swipe for delete
-             val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
-                 ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-                 ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-             ) {
-                 override fun onMove(
-                     recyclerView: RecyclerView,
-                     viewHolder: RecyclerView.ViewHolder,
-                     target: RecyclerView.ViewHolder
-                 ): Boolean {
-                     return true
-                 }
+            val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return true
+                }
 
-                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                     val position = viewHolder.adapterPosition
-                     val rocket = it[position]
-                         viewModel.deleteRocket(rocket)
-                     Snackbar.make(view, "Deleted!", Snackbar.LENGTH_LONG).apply {
-                         setAction("Undo") {
-                             viewModel.upsert(rocket)
-                         }
-                         show()
-                     }
-                 }
-             }
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val position = viewHolder.adapterPosition
+                    val rocket = it[position]
+                    viewModel.deleteRocket(rocket)
+                    Snackbar.make(view, "Deleted!", Snackbar.LENGTH_LONG).apply {
+                        setAction("Undo") {
+                            viewModel.upsert(rocket)
+                        }
+                        show()
+                    }
+                }
+            }
             ItemTouchHelper(itemTouchHelperCallback).apply {
                 attachToRecyclerView(binding.recyclerViewRockets)
             }
@@ -68,18 +68,12 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
 
 
         rocketsAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-//                putSerializable("roket", it)
-                putParcelable("roket,", it)
-            }
             findNavController().navigate(
-                R.id.action_favoriteRocketsFragment_to_rocketDetailFragment,
-                bundle
+                FavoriteRocketsFragmentDirections.actionFavoriteRocketsFragmentToRocketDetailFragment(
+                    it
+                )
             )
-
         }
-
-
     }
 
 
