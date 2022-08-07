@@ -62,8 +62,8 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
         }
     }
 
-    private fun checkFavorite(id: String, rockets: Rockets) {
-        viewModel.checkFavorite(id, rockets).observe(viewLifecycleOwner, Observer {
+    private fun checkFavorite(rockets: Rockets) {
+        viewModel.checkFavorite(rockets.id).observe(viewLifecycleOwner, Observer {
             if (it.data == true) {
                 viewModel.deleteRocket(rockets)
                 Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
@@ -82,7 +82,7 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
     }
 
     override fun onClickFavorite(rockets: Rockets) {
-        checkFavorite(rockets.id, rockets)
+        checkFavorite(rockets)
     }
 
 }

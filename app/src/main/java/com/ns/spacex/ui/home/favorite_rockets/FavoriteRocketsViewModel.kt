@@ -33,9 +33,9 @@ class FavoriteRocketsViewModel(
         repository.upsertRocket(rockets)
     }
 
-    fun checkFavorite(id: String, rockets: Rockets) = liveData(Dispatchers.IO) {
+    fun checkFavorite(id: String) = liveData(Dispatchers.IO) {
         try {
-            emit(Resource.success(data = repository.checkFavorite(id, rockets)))
+            emit(Resource.success(data = repository.checkFavorite(id)))
         } catch (e: Exception) {
             emit(Resource.error(data = null, message = e.message.toString()))
         }
