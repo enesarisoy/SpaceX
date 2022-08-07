@@ -34,14 +34,12 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
             )
         }
 
-
-
         viewModel.getRockets().observe(viewLifecycleOwner, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        resource.data?.let { rockets ->
-                            retrieveList(rockets)
+                        resource.data?.let { response ->
+                            rocketsAdapter.differ.submitList(response.toList())
                             setProgressBar(View.GONE)
                         }
                     }
@@ -56,31 +54,21 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
             }
         })
 
-
-
     }
-
-
 
     private fun setProgressBar(visibility: Int) {
         binding.progressBar.visibility = visibility
     }
 
-    private fun retrieveList(rockets: List<Rockets>) {
-        rocketsAdapter.apply {
-            addRockets(rockets)
-            notifyDataSetChanged()
-        }
-    }
 
     private fun setupRecyclerView() {
-        rocketsAdapter = RocketsAdapter(arrayListOf(), this)
+        rocketsAdapter = RocketsAdapter(this)
+
         binding.recyclerViewRockets.apply {
             adapter = rocketsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
