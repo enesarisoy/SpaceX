@@ -34,9 +34,28 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
             )
         }
 
-
-
         viewModel.getRockets().observe(viewLifecycleOwner, Observer {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        resource.data?.let { response->
+                            rocketsAdapter.differ.submitList(response.toList())
+                            setProgressBar(View.GONE)
+                        }
+                    }
+                    Status.ERROR -> {
+                        Log.e(TAG, it.message!!)
+                    }
+                    Status.LOADING -> {
+                        Log.e(TAG, "Loading")
+                        setProgressBar(View.VISIBLE)
+                    }
+                }
+            }
+        })
+
+
+       /* viewModel.getRockets().observe(viewLifecycleOwner, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
@@ -54,11 +73,12 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
                     }
                 }
             }
-        })
+        })*/
 
 
 
     }
+
 
 
 
@@ -66,19 +86,19 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
         binding.progressBar.visibility = visibility
     }
 
-    private fun retrieveList(rockets: List<Rockets>) {
-        rocketsAdapter.apply {
-            addRockets(rockets)
-            notifyDataSetChanged()
-        }
-    }
 
     private fun setupRecyclerView() {
-        rocketsAdapter = RocketsAdapter(arrayListOf(), this)
+        rocketsAdapter = RocketsAdapter(this)
+
         binding.recyclerViewRockets.apply {
             adapter = rocketsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
+       /* rocketsAdapter = RocketsAdapter(arrayListOf(), this)
+        binding.recyclerViewRockets.apply {
+            adapter = rocketsAdapter
+            layoutManager = LinearLayoutManager(activity)
+        }*/
     }
 
 

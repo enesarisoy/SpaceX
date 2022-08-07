@@ -8,6 +8,6 @@ class RoomRepository(private val dao: RocketDao) {
     suspend fun upsertRocket(rockets: Rockets) = dao.upsert(rockets)
     fun getSavedRockets() = dao.getAllRockets()
     suspend fun deleteRocket(rockets: Rockets) = dao.deleteRocket(rockets)
-//    fun checkFavorite(id: String) = dao.checkFavorite(id)
+    fun checkFavorite(id: String, rockets: Rockets) = dao.checkFavorite(id)
 
 }

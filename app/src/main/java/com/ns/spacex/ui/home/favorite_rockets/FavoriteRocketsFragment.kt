@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -33,64 +34,47 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
         setupRecyclerView()
 
         viewModel.getSavedRockets().observe(viewLifecycleOwner, Observer {
-            retrieveList(it)
 
-            //swipe for delete
-            val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-            ) {
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
-                ): Boolean {
-                    return true
-                }
+            rocketsAdapter.differ.submitList(it.toList())
 
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val position = viewHolder.adapterPosition
-                    val rocket = it[position]
-                    viewModel.deleteRocket(rocket)
-                    Snackbar.make(view, "Deleted!", Snackbar.LENGTH_LONG).apply {
-                        setAction("Undo") {
-                            viewModel.upsert(rocket)
-                        }
-                        show()
-                    }
-                }
-            }
-            ItemTouchHelper(itemTouchHelperCallback).apply {
-                attachToRecyclerView(binding.recyclerViewRockets)
-            }
 
         })
 
-
         rocketsAdapter.setOnItemClickListener {
+            viewModel.deleteRocket(it)
+        }
+
+      /*  rocketsAdapter.setOnItemClickListener {
             findNavController().navigate(
                 FavoriteRocketsFragmentDirections.actionFavoriteRocketsFragmentToRocketDetailFragment(
                     it
                 )
             )
-        }
+        }*/
     }
 
 
     private fun setupRecyclerView() {
-        rocketsAdapter = RocketsAdapter(arrayListOf(), this)
+        rocketsAdapter = RocketsAdapter(this)
         binding.recyclerViewRockets.apply {
             adapter = rocketsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
     }
 
-    private fun retrieveList(rockets: List<Rockets>) {
-        rocketsAdapter.apply {
-            addRockets(rockets)
-            notifyDataSetChanged()
-        }
+    private fun checkFavorite(id: String, rockets: Rockets) {
+        viewModel.checkFavorite(id, rockets).observe(viewLifecycleOwner, Observer {
+            if (it.data == true) {
+                viewModel.deleteRocket(rockets)
+                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.upsert(rockets)
+                Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
+
+            }
+        })
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -98,7 +82,7 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
     }
 
     override fun onClickFavorite(rockets: Rockets) {
-        TODO("Not yet implemented")
+        checkFavorite(rockets.id, rockets)
     }
 
 }

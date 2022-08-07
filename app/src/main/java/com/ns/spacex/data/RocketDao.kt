@@ -16,6 +16,6 @@ interface RocketDao {
     @Delete
     suspend fun deleteRocket(rockets: Rockets)
 
-  /*  @Query("SELECT * FROM rockets WHERE id = :id")
-    fun checkFavorite(id: String): Int*/
+    @Query("SELECT EXISTS (SELECT 1 FROM rockets WHERE id = :id)")
+    fun checkFavorite(id: String): Boolean
 }

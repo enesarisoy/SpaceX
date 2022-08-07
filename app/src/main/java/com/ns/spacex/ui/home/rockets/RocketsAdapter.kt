@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ns.spacex.R
 import com.ns.spacex.databinding.ItemRocketsBinding
@@ -13,7 +15,6 @@ import com.ns.spacex.util.downloadImage
 
 //TODO(change list with diffutils)
 class RocketsAdapter(
-    private val rockets: ArrayList<Rockets>,
     private val favoriClick: FavoriClickInterface
 ) :
     RecyclerView.Adapter<RocketsAdapter.RocketsViewHolder>() {
@@ -23,6 +24,17 @@ class RocketsAdapter(
         RecyclerView.ViewHolder(binding.root)
 
 
+    private val differCallback = object : DiffUtil.ItemCallback<Rockets>() {
+        override fun areItemsTheSame(oldItem: Rockets, newItem: Rockets): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Rockets, newItem: Rockets): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    val differ = AsyncListDiffer(this, differCallback)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketsViewHolder =
         RocketsViewHolder(
             ItemRocketsBinding.inflate(
@@ -33,41 +45,37 @@ class RocketsAdapter(
         )
 
     override fun onBindViewHolder(holder: RocketsViewHolder, position: Int) {
-        val rockets = rockets[position]
+        val rocket = differ.currentList[position]
 
         holder.binding.apply {
-            textName.text = rockets.name
-            imgRocket.downloadImage(rockets.flickrImages[0])
-            btnFavorite.setOnClickListener {
-                favoriClick.onClickFavorite(rockets)
-                Log.e("Adapter", rockets.isLiked.toString())
-                if (rockets.isLiked) {
-                    btnFavorite.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            holder.itemView.context,
-                            R.drawable.ic_star_full
-                        )
+            textName.text = rocket.name
+            imgRocket.downloadImage(rocket.flickrImages[0])
+            if (rocket.isLiked) {
+                btnFavorite.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        holder.itemView.context,
+                        R.drawable.ic_star_full
                     )
-                }
+                )
+            } else {
+                btnFavorite.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        holder.itemView.context,
+                        R.drawable.ic_star_empty
+                    )
+                )
+            }
+            btnFavorite.setOnClickListener {
+                favoriClick.onClickFavorite(rocket)
+
             }
             holder.itemView.setOnClickListener {
-                onItemClickListener?.let { it(rockets) }
-
+                onItemClickListener?.let { it(rocket) }
             }
-
-
         }
     }
 
-    override fun getItemCount(): Int = rockets.size
-
-    fun addRockets(rockets: List<Rockets>) {
-        this.rockets.apply {
-            clear()
-            addAll(rockets)
-        }
-    }
-
+    override fun getItemCount(): Int = differ.currentList.size
 
     private var onItemClickListener: ((Rockets) -> Unit)? = null
 
