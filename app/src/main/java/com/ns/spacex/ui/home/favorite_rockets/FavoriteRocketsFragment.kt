@@ -36,21 +36,15 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
         viewModel.getSavedRockets().observe(viewLifecycleOwner, Observer {
 
             rocketsAdapter.differ.submitList(it.toList())
-
-
         })
 
         rocketsAdapter.setOnItemClickListener {
-            viewModel.deleteRocket(it)
-        }
-
-      /*  rocketsAdapter.setOnItemClickListener {
             findNavController().navigate(
                 FavoriteRocketsFragmentDirections.actionFavoriteRocketsFragmentToRocketDetailFragment(
                     it
                 )
             )
-        }*/
+        }
     }
 
 
@@ -70,11 +64,9 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
             } else {
                 viewModel.upsert(rockets)
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
-
             }
         })
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

@@ -13,7 +13,6 @@ import com.ns.spacex.databinding.ItemRocketsBinding
 import com.ns.spacex.model.Rockets
 import com.ns.spacex.util.downloadImage
 
-//TODO(change list with diffutils)
 class RocketsAdapter(
     private val favoriClick: FavoriClickInterface
 ) :
@@ -22,7 +21,6 @@ class RocketsAdapter(
 
     inner class RocketsViewHolder(val binding: ItemRocketsBinding) :
         RecyclerView.ViewHolder(binding.root)
-
 
     private val differCallback = object : DiffUtil.ItemCallback<Rockets>() {
         override fun areItemsTheSame(oldItem: Rockets, newItem: Rockets): Boolean {

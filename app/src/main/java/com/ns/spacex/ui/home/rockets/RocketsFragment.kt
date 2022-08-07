@@ -38,7 +38,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        resource.data?.let { response->
+                        resource.data?.let { response ->
                             rocketsAdapter.differ.submitList(response.toList())
                             setProgressBar(View.GONE)
                         }
@@ -54,33 +54,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
             }
         })
 
-
-       /* viewModel.getRockets().observe(viewLifecycleOwner, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        resource.data?.let { rockets ->
-                            retrieveList(rockets)
-                            setProgressBar(View.GONE)
-                        }
-                    }
-                    Status.ERROR -> {
-                        Log.e(TAG, it.message!!)
-                    }
-                    Status.LOADING -> {
-                        Log.e(TAG, "Loading")
-                        setProgressBar(View.VISIBLE)
-                    }
-                }
-            }
-        })*/
-
-
-
     }
-
-
-
 
     private fun setProgressBar(visibility: Int) {
         binding.progressBar.visibility = visibility
@@ -94,13 +68,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
             adapter = rocketsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
-       /* rocketsAdapter = RocketsAdapter(arrayListOf(), this)
-        binding.recyclerViewRockets.apply {
-            adapter = rocketsAdapter
-            layoutManager = LinearLayoutManager(activity)
-        }*/
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
