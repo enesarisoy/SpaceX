@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ns.spacex.databinding.ItemUpcomingLaunchesBinding
-import com.ns.spacex.model.Rockets
 import com.ns.spacex.model.upcoming_launches.UpcomingLaunchesModel
 
 class UpcomingLaunchesAdapter() :

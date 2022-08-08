@@ -16,7 +16,6 @@ class RocketDetailViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-
     private val repository: SpaceXRepository = SpaceXRepository()
     private val roomRepository: RoomRepository
 
@@ -34,8 +33,22 @@ class RocketDetailViewModel(
         }
     }
 
-    fun saveRocket(rockets: Rockets) = viewModelScope.launch {
+    fun upsert(rockets: Rockets) = viewModelScope.launch {
+        rockets.isLiked = true
         roomRepository.upsertRocket(rockets)
     }
 
+    fun deleteById(rockets: Rockets) = viewModelScope.launch {
+        rockets.isLiked = false
+        roomRepository.deleteById(rockets.id)
+    }
+
+
+    fun checkFavorite(id: String) = liveData(Dispatchers.IO) {
+        try {
+            emit(Resource.success(data = roomRepository.checkFavorite(id)))
+        } catch (e: Exception) {
+            emit(Resource.error(data = null, message = e.message.toString()))
+        }
+    }
 }

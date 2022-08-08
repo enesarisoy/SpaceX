@@ -1,11 +1,11 @@
 package com.ns.spacex.ui.home.rocket_detail
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -26,8 +26,6 @@ class RocketDetailFragment : Fragment(R.layout.fragment_rocket_detail) {
     private val viewModel: RocketDetailViewModel by activityViewModels()
     val args: RocketDetailFragmentArgs by navArgs()
     val TAG = "RocketDetailFragment"
-    var isLiked : Boolean = false
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,26 +55,23 @@ class RocketDetailFragment : Fragment(R.layout.fragment_rocket_detail) {
         }
 
 
-
         binding.btnFavorite.setOnClickListener {
-            viewModel.saveRocket(args.roket!!)
-            binding.btnFavorite.setColorFilter(ResourcesCompat.getColor(resources, R.color.black, null))
-            Snackbar.make(view, "Rocket saved!", Snackbar.LENGTH_LONG).show()
+            viewModel.checkFavorite(args.roket.id).observe(viewLifecycleOwner, Observer {
+                if (it.data == true) {
+                    viewModel.deleteById(args.roket)
+                    Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.upsert(args.roket)
+                    binding.btnFavorite.setColorFilter(ResourcesCompat.getColor(resources, R.color.black, null))
+                    Snackbar.make(view, "Rocket saved!", Snackbar.LENGTH_LONG).show()
+                }
 
+            })
         }
 
-
-        /* val roket = args.roket
-         binding.apply {
-             textName.text = roket?.name
-             textDesciption.text = roket?.description
-             initCarousel(roket!!.flickrImages)
-         }
- */
         binding.btnBack.setOnClickListener {
             (activity as MainActivity).onBackPressed()
         }
-
 
     }
 
