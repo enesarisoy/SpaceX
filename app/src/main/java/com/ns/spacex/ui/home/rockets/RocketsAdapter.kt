@@ -33,6 +33,7 @@ class RocketsAdapter(
     }
 
     val differ = AsyncListDiffer(this, differCallback)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketsViewHolder =
         RocketsViewHolder(
             ItemRocketsBinding.inflate(

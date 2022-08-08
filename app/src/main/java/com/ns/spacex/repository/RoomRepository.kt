@@ -9,5 +9,6 @@ class RoomRepository(private val dao: RocketDao) {
     fun getSavedRockets() = dao.getAllRockets()
     suspend fun deleteRocket(rockets: Rockets) = dao.deleteRocket(rockets)
     fun checkFavorite(id: String) = dao.checkFavorite(id)
+    suspend fun deleteById(id: String) = dao.deleteById(id)
 
 }

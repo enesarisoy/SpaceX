@@ -22,4 +22,5 @@ interface RetrofitApi {
     suspend fun getLaunchDetail(
         @Path("id") id: String
     ): UpcomingLaunchesModel
+
 }

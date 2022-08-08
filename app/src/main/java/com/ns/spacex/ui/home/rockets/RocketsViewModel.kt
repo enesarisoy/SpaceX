@@ -36,12 +36,33 @@ class RocketsViewModel(
         }
     }
 
+
+
     fun saveRocket(rockets: Rockets) = viewModelScope.launch {
         roomRepository.upsertRocket(rockets)
     }
 
-    fun checkFavorite(id: String) = viewModelScope.launch {
-//        roomRepository.checkFavorite(id)
+    fun deleteRocket(rockets: Rockets) = viewModelScope.launch {
+        rockets.isLiked = false
+        roomRepository.deleteRocket(rockets)
+    }
+
+    fun upsert(rockets: Rockets) = viewModelScope.launch {
+        roomRepository.upsertRocket(rockets)
+        rockets.isLiked = true
+    }
+
+    fun deleteById(id: String, rockets: Rockets) = viewModelScope.launch {
+        roomRepository.deleteById(rockets.id)
+        rockets.isLiked = false
+    }
+
+    fun checkFavorite(id: String) = liveData(Dispatchers.IO) {
+        try {
+            emit(Resource.success(data = roomRepository.checkFavorite(id)))
+        } catch (e: Exception) {
+            emit(Resource.error(data = null, message = e.message.toString()))
+        }
     }
 
 

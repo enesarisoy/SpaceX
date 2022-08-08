@@ -20,6 +20,6 @@ data class Rockets(
     val firstFlight: String?,
     @SerializedName("flickr_images")
     val flickrImages: ArrayList<String>,
-    var isLiked: Boolean = false
+    var isLiked: Boolean
 ) : Parcelable {
 }

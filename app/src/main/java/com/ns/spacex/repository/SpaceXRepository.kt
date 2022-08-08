@@ -9,4 +9,5 @@ class SpaceXRepository() {
     suspend fun getUpcomingLaunches() = RetrofitInstance.api.getUpcomingLaunches()
     suspend fun getLaunchDetail(id: String) = RetrofitInstance.api.getLaunchDetail(id)
 
+
 }
