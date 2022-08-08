@@ -23,7 +23,7 @@ class UpcomingLaunchesFragment : Fragment(R.layout.fragment_upcoming_launches) {
     private val binding get() = _binding!!
     private val viewModel: UpcomingLaunchesViewModel by activityViewModels()
     lateinit var launchesAdapter: UpcomingLaunchesAdapter
-    val TAG = "UpcomingLaunches"
+    private val TAG = "UpcomingLaunches"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,7 +43,7 @@ class UpcomingLaunchesFragment : Fragment(R.layout.fragment_upcoming_launches) {
                 when (resource.status) {
                     Status.SUCCESS -> {
                         resource.data?.let { launches ->
-                            retrieveList(launches)
+                            launchesAdapter.differ.submitList(launches)
                         }
                     }
                     Status.ERROR -> Log.e(TAG, it.message!!)
@@ -53,15 +53,9 @@ class UpcomingLaunchesFragment : Fragment(R.layout.fragment_upcoming_launches) {
         })
     }
 
-    private fun retrieveList(launches: List<UpcomingLaunchesModel>) {
-        launchesAdapter.apply {
-            addLaunches(launches)
-            notifyDataSetChanged()
-        }
-    }
 
     private fun setupRecyclerView() {
-        launchesAdapter = UpcomingLaunchesAdapter(arrayListOf())
+        launchesAdapter = UpcomingLaunchesAdapter()
         binding.recyclerViewLaunches.apply {
             adapter = launchesAdapter
             layoutManager = LinearLayoutManager(activity)
