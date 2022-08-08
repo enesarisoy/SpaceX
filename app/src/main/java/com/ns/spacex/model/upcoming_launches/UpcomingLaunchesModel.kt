@@ -9,7 +9,8 @@ data class UpcomingLaunchesModel(
     @SerializedName("date_utc")
     val date: String?,
     @SerializedName("flight_number")
-    val flightNumber: Int?
+    val flightNumber: Int?,
+    val links: Links
 
 ): Serializable {
     override fun hashCode(): Int {

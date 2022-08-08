@@ -13,15 +13,16 @@ import com.ns.spacex.R
 import com.ns.spacex.databinding.FragmentLaunchDetailBinding
 import com.ns.spacex.ui.MainActivity
 import com.ns.spacex.util.Status
+import com.ns.spacex.util.downloadImage
 
 
 class LaunchDetailFragment : Fragment(R.layout.fragment_launch_detail) {
 
     private var _binding: FragmentLaunchDetailBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
     private val viewModel: LaunchDetailViewModel by activityViewModels()
-    val TAG = "LaunchDetailFragment"
-    val args: LaunchDetailFragmentArgs by navArgs()
+    private val TAG = "LaunchDetailFragment"
+    private val args: LaunchDetailFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +37,10 @@ class LaunchDetailFragment : Fragment(R.layout.fragment_launch_detail) {
                                 textName.text = it.name
                                 textDate.text = it.date
                                 textFlightNumber.text = it.flightNumber.toString()
+                                if (it.links.patch.small != null) {
+                                    imgLaunch.visibility = View.VISIBLE
+                                    imgLaunch.downloadImage(it.links.patch.small.toString())
+                                }
                             }
                         }
                     }
