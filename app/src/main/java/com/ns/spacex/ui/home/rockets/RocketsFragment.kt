@@ -109,4 +109,14 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
     override fun onClickFavorite(rockets: Rockets) {
         checkFavorite(rockets)
     }
+
+
+    private fun cek(rockets: List<Rockets>) {
+
+       /* rockets.forEachIndexed{
+
+        }*/
+
+
+    }
 }

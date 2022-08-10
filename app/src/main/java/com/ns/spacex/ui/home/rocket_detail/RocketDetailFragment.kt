@@ -39,14 +39,14 @@ class RocketDetailFragment : Fragment(R.layout.fragment_rocket_detail) {
                         Status.SUCCESS -> {
                             resource.data?.let {
                                 binding.apply {
-                                    textName.text = it.name
+                                    textName.text = it.name ?: "deneme"
                                     textDesciption.text = it.description
                                     initCarousel(it.flickrImages)
                                 }
                             }
                         }
                         Status.ERROR -> {
-                            Log.e(TAG, it.message!!)
+                            it.message?.let { it1 -> Log.e(TAG, it1) }
                         }
                         Status.LOADING -> Log.e(TAG, "Loading")
                     }
