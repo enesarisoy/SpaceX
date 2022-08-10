@@ -41,26 +41,12 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
                 when (resource.status) {
                     Status.SUCCESS -> {
                         resource.data?.let { response ->
-                            rocketsAdapter.differ.submitList(response)
+                            getFavoritesData(response)
                             setProgressBar(View.GONE)
-                            for (i in 0..response.size) {
-                                viewModel.checkFavorite(response[i].id).observe(viewLifecycleOwner, Observer {
-                                    if (response[i].isLiked) {
-                                        Log.e(TAG, "Sonuc: " + response[i].name.toString() + response[i].isLiked.toString())
-                                        onClickFavorite(response[i])
-                                    } else {
-                                        Log.e(TAG, "Sonuc: " + response[i].name.toString() + response[i].isLiked.toString())
-
-                                    }
-                                })
-
-
-                            }
                         }
                     }
-                    Status.ERROR -> {
-                        Log.e(TAG, it.message!!)
-                    }
+                    Status.ERROR -> Log.e(TAG, it.message!!)
+
                     Status.LOADING -> {
                         Log.e(TAG, "Loading")
                         setProgressBar(View.VISIBLE)
@@ -68,9 +54,6 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
                 }
             }
         })
-
-
-
     }
 
     private fun setProgressBar(visibility: Int) {
@@ -81,14 +64,13 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
         viewModel.checkFavorite(rockets.id).observe(viewLifecycleOwner, Observer {
             if (it.data == true) {
                 viewModel.deleteById(rockets.id, rockets)
-                rockets.isLiked = false
                 Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.upsert(rockets)
-                rockets.isLiked = true
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
             }
         })
+
     }
 
 
@@ -108,14 +90,24 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
 
     override fun onClickFavorite(rockets: Rockets) {
         checkFavorite(rockets)
+
     }
 
 
-    private fun cek(rockets: List<Rockets>) {
+    private fun getFavoritesData(rockets: List<Rockets>) {
+        var savedList: List<Rockets>
 
-       /* rockets.forEachIndexed{
-
-        }*/
+        viewModel.getSavedRockets().observe(viewLifecycleOwner, Observer {
+            savedList = it
+            savedList.forEach { favoriteRocket ->
+                rockets.find { rocket ->
+                    rocket.id == favoriteRocket.id
+                }?.also {
+                    it.isLiked = true
+                }
+            }
+            rocketsAdapter.differ.submitList(rockets)
+        })
 
 
     }
