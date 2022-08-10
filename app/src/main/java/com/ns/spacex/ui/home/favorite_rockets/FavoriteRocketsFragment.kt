@@ -2,20 +2,13 @@ package com.ns.spacex.ui.home.favorite_rockets
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.ns.spacex.R
 import com.ns.spacex.databinding.FragmentFavoriteRocketsBinding
-import com.ns.spacex.databinding.FragmentRocketsBinding
 import com.ns.spacex.model.Rockets
 import com.ns.spacex.ui.home.rockets.FavoriClickInterface
 import com.ns.spacex.ui.home.rockets.RocketsAdapter
@@ -33,10 +26,10 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
 
         setupRecyclerView()
 
-        viewModel.getSavedRockets().observe(viewLifecycleOwner, Observer {
+        viewModel.getSavedRockets().observe(viewLifecycleOwner) {
 
             rocketsAdapter.differ.submitList(it.toList())
-        })
+        }
 
         rocketsAdapter.setOnItemClickListener {
             findNavController().navigate(
@@ -57,7 +50,7 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
     }
 
     private fun checkFavorite(rockets: Rockets) {
-        viewModel.checkFavorite(rockets.id).observe(viewLifecycleOwner, Observer {
+        viewModel.checkFavorite(rockets.id).observe(viewLifecycleOwner) {
             if (it.data == true) {
                 viewModel.deleteRocket(rockets)
                 Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
@@ -65,7 +58,7 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
                 viewModel.upsert(rockets)
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 
     override fun onDestroy() {

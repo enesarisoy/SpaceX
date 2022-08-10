@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ns.spacex.databinding.ItemUpcomingLaunchesBinding
 import com.ns.spacex.model.upcoming_launches.UpcomingLaunchesModel
 
-class UpcomingLaunchesAdapter() :
+class UpcomingLaunchesAdapter :
     RecyclerView.Adapter<UpcomingLaunchesAdapter.LaunchesViewHolder>() {
     inner class LaunchesViewHolder(val binding: ItemUpcomingLaunchesBinding) :
         RecyclerView.ViewHolder(binding.root)

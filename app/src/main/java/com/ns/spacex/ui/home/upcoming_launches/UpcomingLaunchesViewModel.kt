@@ -6,8 +6,7 @@ import com.ns.spacex.repository.SpaceXRepository
 import com.ns.spacex.util.Resource
 import kotlinx.coroutines.Dispatchers
 
-class UpcomingLaunchesViewModel(
-) : ViewModel() {
+class UpcomingLaunchesViewModel : ViewModel() {
 
     private val repository: SpaceXRepository = SpaceXRepository()
 
@@ -15,7 +14,7 @@ class UpcomingLaunchesViewModel(
         getUpcomingLaunches()
     }
 
-    fun getUpcomingLaunches() = liveData(Dispatchers.IO){
+    fun getUpcomingLaunches() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.getUpcomingLaunches()))

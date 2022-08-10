@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.jama.carouselview.enums.IndicatorAnimationType
@@ -32,8 +31,8 @@ class RocketDetailFragment : Fragment(R.layout.fragment_rocket_detail) {
 
         _binding = FragmentRocketDetailBinding.bind(view)
 
-        args.roket?.let {
-            viewModel.getRocketDetail(it.id).observe(viewLifecycleOwner, Observer {
+        args.roket.let {
+            viewModel.getRocketDetail(it.id).observe(viewLifecycleOwner) {
                 it?.let { resource ->
                     when (resource.status) {
                         Status.SUCCESS -> {
@@ -51,22 +50,28 @@ class RocketDetailFragment : Fragment(R.layout.fragment_rocket_detail) {
                         Status.LOADING -> Log.e(TAG, "Loading")
                     }
                 }
-            })
+            }
         }
 
 
         binding.btnFavorite.setOnClickListener {
-            viewModel.checkFavorite(args.roket.id).observe(viewLifecycleOwner, Observer {
+            viewModel.checkFavorite(args.roket.id).observe(viewLifecycleOwner) {
                 if (it.data == true) {
                     viewModel.deleteById(args.roket)
                     Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.upsert(args.roket)
-                    binding.btnFavorite.setColorFilter(ResourcesCompat.getColor(resources, R.color.black, null))
+                    binding.btnFavorite.setColorFilter(
+                        ResourcesCompat.getColor(
+                            resources,
+                            R.color.black,
+                            null
+                        )
+                    )
                     Snackbar.make(view, "Rocket saved!", Snackbar.LENGTH_LONG).show()
                 }
 
-            })
+            }
         }
 
         binding.btnBack.setOnClickListener {

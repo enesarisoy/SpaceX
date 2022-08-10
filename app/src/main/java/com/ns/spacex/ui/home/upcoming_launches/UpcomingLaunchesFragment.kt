@@ -3,17 +3,12 @@ package com.ns.spacex.ui.home.upcoming_launches
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ns.spacex.R
 import com.ns.spacex.databinding.FragmentUpcomingLaunchesBinding
-import com.ns.spacex.model.upcoming_launches.UpcomingLaunchesModel
-import com.ns.spacex.ui.home.rockets.RocketsFragmentDirections
 import com.ns.spacex.util.Status
 
 
@@ -38,7 +33,7 @@ class UpcomingLaunchesFragment : Fragment(R.layout.fragment_upcoming_launches) {
         }
 
 
-        viewModel.getUpcomingLaunches().observe(viewLifecycleOwner, Observer {
+        viewModel.getUpcomingLaunches().observe(viewLifecycleOwner) {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
@@ -46,11 +41,11 @@ class UpcomingLaunchesFragment : Fragment(R.layout.fragment_upcoming_launches) {
                             launchesAdapter.differ.submitList(launches)
                         }
                     }
-                    Status.ERROR -> Log.e(TAG, it.message!!)
+                    Status.ERROR -> it.message?.let { it1 -> Log.e(TAG, it1) }
                     Status.LOADING -> Log.e(TAG, "Loading")
                 }
             }
-        })
+        }
     }
 
 

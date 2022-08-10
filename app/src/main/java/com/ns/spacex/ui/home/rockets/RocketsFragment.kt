@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ns.spacex.R
@@ -36,7 +34,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
         }
 
 
-        viewModel.getRockets().observe(viewLifecycleOwner, Observer {
+        viewModel.getRockets().observe(viewLifecycleOwner) {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
@@ -45,7 +43,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
                             setProgressBar(View.GONE)
                         }
                     }
-                    Status.ERROR -> Log.e(TAG, it.message!!)
+                    Status.ERROR -> it.message?.let { it1 -> Log.e(TAG, it1) }
 
                     Status.LOADING -> {
                         Log.e(TAG, "Loading")
@@ -53,7 +51,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
                     }
                 }
             }
-        })
+        }
     }
 
     private fun setProgressBar(visibility: Int) {
@@ -61,7 +59,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
     }
 
     private fun checkFavorite(rockets: Rockets) {
-        viewModel.checkFavorite(rockets.id).observe(viewLifecycleOwner, Observer {
+        viewModel.checkFavorite(rockets.id).observe(viewLifecycleOwner) {
             if (it.data == true) {
                 viewModel.deleteById(rockets.id, rockets)
                 Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
@@ -69,8 +67,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
                 viewModel.upsert(rockets)
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
             }
-        })
-
+        }
     }
 
 
@@ -97,7 +94,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
     private fun getFavoritesData(rockets: List<Rockets>) {
         var savedList: List<Rockets>
 
-        viewModel.getSavedRockets().observe(viewLifecycleOwner, Observer {
+        viewModel.getSavedRockets().observe(viewLifecycleOwner) {
             savedList = it
             savedList.forEach { favoriteRocket ->
                 rockets.find { rocket ->
@@ -107,8 +104,6 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
                 }
             }
             rocketsAdapter.differ.submitList(rockets)
-        })
-
-
+        }
     }
 }

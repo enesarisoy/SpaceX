@@ -3,11 +3,8 @@ package com.ns.spacex.ui.home.launch_detail
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.ns.spacex.R
 import com.ns.spacex.databinding.FragmentLaunchDetailBinding
@@ -28,29 +25,32 @@ class LaunchDetailFragment : Fragment(R.layout.fragment_launch_detail) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentLaunchDetailBinding.bind(view)
 
-        viewModel.getLaunchDetail(args.upcoming.id!!).observe(viewLifecycleOwner, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        resource.data?.let {
-                            binding.apply {
-                                textName.text = it.name
-                                textDate.text = it.date
-                                textFlightNumber.text = it.flightNumber.toString()
-                                if (it.links.patch.small != null) {
-                                    imgLaunch.visibility = View.VISIBLE
-                                    imgLaunch.downloadImage(it.links.patch.small.toString())
+        args.upcoming.id?.let {
+            viewModel.getLaunchDetail(it).observe(viewLifecycleOwner) {
+                it?.let { resource ->
+                    when (resource.status) {
+                        Status.SUCCESS -> {
+                            resource.data?.let {
+                                binding.apply {
+                                    textName.text = it.name
+                                    textDate.text = it.date
+                                    textFlightNumber.text = it.flightNumber.toString()
+
+                                    it.links.patch.small?.let { url ->
+                                        imgLaunch.visibility = View.VISIBLE
+                                        imgLaunch.downloadImage(it.links.patch.small.toString())
+                                    }
                                 }
                             }
                         }
+                        Status.ERROR -> {
+                            it.message?.let { it1 -> Log.e(TAG, it1) }
+                        }
+                        Status.LOADING -> Log.e(TAG, "Loading")
                     }
-                    Status.ERROR -> {
-                        Log.e(TAG, it.message!!)
-                    }
-                    Status.LOADING -> Log.e(TAG, "Loading")
                 }
             }
-        })
+        }
 
         binding.btnBack.setOnClickListener {
             (activity as MainActivity).onBackPressed()

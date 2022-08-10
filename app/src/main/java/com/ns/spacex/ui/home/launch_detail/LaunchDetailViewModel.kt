@@ -6,8 +6,7 @@ import com.ns.spacex.repository.SpaceXRepository
 import com.ns.spacex.util.Resource
 import kotlinx.coroutines.Dispatchers
 
-class LaunchDetailViewModel(
-): ViewModel() {
+class LaunchDetailViewModel : ViewModel() {
 
     private val repository: SpaceXRepository = SpaceXRepository()
     fun getLaunchDetail(id: String) = liveData(Dispatchers.IO) {
