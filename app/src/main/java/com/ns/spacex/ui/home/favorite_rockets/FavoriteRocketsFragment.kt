@@ -28,7 +28,8 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
 
         viewModel.getSavedRockets().observe(viewLifecycleOwner) {
 
-            rocketsAdapter.differ.submitList(it.toList())
+            rocketsAdapter.updateRockets(it)
+//            rocketsAdapter.differ.submitList(it.toList())
         }
 
         rocketsAdapter.setOnItemClickListener {
@@ -42,20 +43,22 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
 
 
     private fun setupRecyclerView() {
-        rocketsAdapter = RocketsAdapter(this)
+        rocketsAdapter = RocketsAdapter(this, listOf())
         binding.recyclerViewRockets.apply {
             adapter = rocketsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
     }
 
-    private fun checkFavorite(rockets: Rockets) {
+    private fun checkFavorite(rockets: Rockets, rocketList: List<Rockets>) {
         viewModel.checkFavorite(rockets.id).observe(viewLifecycleOwner) {
             if (it.data == true) {
                 viewModel.deleteRocket(rockets)
+                rocketsAdapter.updateRockets(rocketList)
                 Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.upsert(rockets)
+                rocketsAdapter.updateRockets(rocketList)
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
             }
         }
@@ -66,8 +69,12 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
         _binding = null
     }
 
-    override fun onClickFavorite(rockets: Rockets) {
-        checkFavorite(rockets)
+    /* override fun onClickFavorite(rockets: Rockets) {
+         checkFavorite(rockets)
+     }*/
+
+    override fun onClickFavorite(rockets: Rockets, rocketsList: List<Rockets>) {
+        checkFavorite(rockets, rocketsList)
     }
 
 }

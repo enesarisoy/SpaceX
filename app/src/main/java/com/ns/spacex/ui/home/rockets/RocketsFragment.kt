@@ -58,13 +58,15 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
         binding.progressBar.visibility = visibility
     }
 
-    private fun checkFavorite(rockets: Rockets) {
+    private fun checkFavorite(rockets: Rockets, rocketList: List<Rockets>) {
         viewModel.checkFavorite(rockets.id).observe(viewLifecycleOwner) {
             if (it.data == true) {
                 viewModel.deleteById(rockets.id, rockets)
+                rocketsAdapter.updateRockets(rocketList)
                 Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.upsert(rockets)
+                rocketsAdapter.updateRockets(rocketList)
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
             }
         }
@@ -72,7 +74,7 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
 
 
     private fun setupRecyclerView() {
-        rocketsAdapter = RocketsAdapter(this)
+        rocketsAdapter = RocketsAdapter(this, listOf())
 
         binding.recyclerViewRockets.apply {
             adapter = rocketsAdapter
@@ -85,8 +87,9 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
         _binding = null
     }
 
-    override fun onClickFavorite(rockets: Rockets) {
-        checkFavorite(rockets)
+    override fun onClickFavorite(rockets: Rockets, rocketList: List<Rockets>) {
+        checkFavorite(rockets, rocketList)
+        rocketsAdapter.updateRockets(rocketList)
 
     }
 
@@ -103,7 +106,8 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
                     it.isLiked = true
                 }
             }
-            rocketsAdapter.differ.submitList(rockets)
+            rocketsAdapter.updateRockets(rockets)
+//            rocketsAdapter.differ.submitList(rockets)
         }
     }
 }

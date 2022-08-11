@@ -12,15 +12,18 @@ import com.ns.spacex.model.Rockets
 import com.ns.spacex.util.downloadImage
 
 class RocketsAdapter(
-    private val favoriClick: FavoriClickInterface
+    private val favoriClick: FavoriClickInterface,
+    private var rocketList: List<Rockets>
 ) :
     RecyclerView.Adapter<RocketsAdapter.RocketsViewHolder>() {
+
+
 
 
     inner class RocketsViewHolder(val binding: ItemRocketsBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    private val differCallback = object : DiffUtil.ItemCallback<Rockets>() {
+    /*private val differCallback = object : DiffUtil.ItemCallback<Rockets>() {
         override fun areItemsTheSame(oldItem: Rockets, newItem: Rockets): Boolean {
             return oldItem.id == newItem.id
         }
@@ -30,7 +33,7 @@ class RocketsAdapter(
         }
     }
 
-    val differ = AsyncListDiffer(this, differCallback)
+    val differ = AsyncListDiffer(this, differCallback)*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketsViewHolder =
         RocketsViewHolder(
@@ -42,7 +45,8 @@ class RocketsAdapter(
         )
 
     override fun onBindViewHolder(holder: RocketsViewHolder, position: Int) {
-        val rocket = differ.currentList[position]
+//        val rocket = differ.currentList[position]
+        val rocket = rocketList[position]
 
         holder.binding.apply {
             textName.text = rocket.name
@@ -63,7 +67,7 @@ class RocketsAdapter(
                 )
             }
             btnFavorite.setOnClickListener {
-                favoriClick.onClickFavorite(rocket)
+                favoriClick.onClickFavorite(rocketList[position], rocketList)
 
             }
             holder.itemView.setOnClickListener {
@@ -72,12 +76,17 @@ class RocketsAdapter(
         }
     }
 
-    override fun getItemCount(): Int = differ.currentList.size
+    override fun getItemCount(): Int = rocketList.size
 
     private var onItemClickListener: ((Rockets) -> Unit)? = null
 
     fun setOnItemClickListener(listener: (Rockets) -> Unit) {
         onItemClickListener = listener
+    }
+
+    fun updateRockets(rockets: List<Rockets>) {
+        this.rocketList = rockets
+        notifyDataSetChanged()
     }
 
 

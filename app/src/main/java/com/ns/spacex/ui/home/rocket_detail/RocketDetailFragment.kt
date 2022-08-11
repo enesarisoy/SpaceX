@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
@@ -38,7 +39,7 @@ class RocketDetailFragment : Fragment(R.layout.fragment_rocket_detail) {
                         Status.SUCCESS -> {
                             resource.data?.let {
                                 binding.apply {
-                                    textName.text = it.name ?: "deneme"
+                                    textName.text = it.name
                                     textDesciption.text = it.description
                                     initCarousel(it.flickrImages)
                                 }
@@ -53,19 +54,40 @@ class RocketDetailFragment : Fragment(R.layout.fragment_rocket_detail) {
             }
         }
 
+        if (args.roket.isLiked) {
+            binding.btnFavorite.setImageDrawable(
+                ContextCompat.getDrawable(
+                    view.context,
+                    R.drawable.ic_star_full
+                )
+            )
+        } else {
+            binding.btnFavorite.setImageDrawable(
+                ContextCompat.getDrawable(
+                    view.context,
+                    R.drawable.ic_star_empty
+                )
+            )
+        }
+
 
         binding.btnFavorite.setOnClickListener {
             viewModel.checkFavorite(args.roket.id).observe(viewLifecycleOwner) {
                 if (it.data == true) {
                     viewModel.deleteById(args.roket)
-                    Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+                    binding.btnFavorite.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            view.context,
+                            R.drawable.ic_star_empty
+                        )
+                    )
+                    Snackbar.make(view, "Rocket deleted!", Snackbar.LENGTH_LONG).show()
                 } else {
                     viewModel.upsert(args.roket)
-                    binding.btnFavorite.setColorFilter(
-                        ResourcesCompat.getColor(
-                            resources,
-                            R.color.black,
-                            null
+                    binding.btnFavorite.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            view.context,
+                            R.drawable.ic_star_full
                         )
                     )
                     Snackbar.make(view, "Rocket saved!", Snackbar.LENGTH_LONG).show()
