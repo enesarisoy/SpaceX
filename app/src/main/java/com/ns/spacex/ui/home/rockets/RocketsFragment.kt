@@ -62,9 +62,14 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriClickInterfac
         viewModel.checkFavorite(rockets.id).observe(viewLifecycleOwner) {
             if (it.data == true) {
                 viewModel.deleteById(rockets.id, rockets)
+//                rocketsAdapter.deleteRocket(rockets.id)
+                rockets.isLiked = false
+                rocketsAdapter.updateRocket(rockets)
                 Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.upsert(rockets)
+                rockets.isLiked = true
+                rocketsAdapter.updateRocket(rockets)
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
             }
         }

@@ -80,5 +80,19 @@ class RocketsAdapter(
         onItemClickListener = listener
     }
 
+    fun deleteRocket(id: String) {
+        val index = differ.currentList.indexOfFirst {
+            id == it.id
+        }
+        notifyItemRemoved(index)
+    }
+
+    fun updateRocket(rockets: Rockets) {
+        val index = differ.currentList.indexOfFirst {
+            rockets.id == it.id
+        }
+        notifyItemChanged(index)
+    }
+
 
 }
