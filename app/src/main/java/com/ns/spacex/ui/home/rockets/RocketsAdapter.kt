@@ -43,7 +43,7 @@ class RocketsAdapter(
     override fun onBindViewHolder(holder: RocketsViewHolder, position: Int) {
         val rocket = differ.currentList[position]
 
-        holder.binding.apply {
+        holder.binding.run {
             textName.text = rocket.name
             imgRocket.downloadImage(rocket.flickrImages[0])
             if (rocket.isLiked) {
