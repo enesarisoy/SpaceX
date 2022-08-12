@@ -28,7 +28,6 @@ class RocketDetailFragment : Fragment(R.layout.fragment_rocket_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         _binding = FragmentRocketDetailBinding.bind(view)
 
         initObservers()

@@ -88,8 +88,8 @@ class RocketsFragment : Fragment(R.layout.fragment_rockets), FavoriteClickInterf
     private fun getFavoritesData(rockets: List<Rockets>) {
         var savedList: List<Rockets>
 
-        viewModel.getSavedRockets().observe(viewLifecycleOwner) {
-            savedList = it
+        viewModel.getSavedRockets().observe(viewLifecycleOwner) { rocketList ->
+            savedList = rocketList
             savedList.forEach { favoriteRocket ->
                 rockets.find { rocket ->
                     rocket.id == favoriteRocket.id

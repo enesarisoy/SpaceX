@@ -16,7 +16,6 @@ class RocketsAdapter(
 ) :
     RecyclerView.Adapter<RocketsAdapter.RocketsViewHolder>() {
 
-
     inner class RocketsViewHolder(val binding: ItemRocketsBinding) :
         RecyclerView.ViewHolder(binding.root)
 

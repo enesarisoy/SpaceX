@@ -28,7 +28,6 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
         setupRecyclerView()
         initObservers()
         initNavigation()
-
     }
 
     private fun initObservers() {
