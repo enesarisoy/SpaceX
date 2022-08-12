@@ -4,20 +4,21 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ns.spacex.R
 import com.ns.spacex.databinding.FragmentFavoriteRocketsBinding
 import com.ns.spacex.model.Rockets
-import com.ns.spacex.ui.home.rockets.FavoriClickInterface
+import com.ns.spacex.ui.home.rockets.FavoriteClickInterface
 import com.ns.spacex.ui.home.rockets.RocketsAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), FavoriClickInterface {
+@AndroidEntryPoint
+class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), FavoriteClickInterface {
     private var _binding: FragmentFavoriteRocketsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: FavoriteRocketsViewModel by activityViewModels()
+    private val viewModel: FavoriteRocketsViewModel by viewModels()
     lateinit var rocketsAdapter: RocketsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -25,12 +26,18 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
         _binding = FragmentFavoriteRocketsBinding.bind(view)
 
         setupRecyclerView()
+        initObservers()
+        initNavigation()
 
+    }
+
+    private fun initObservers() {
         viewModel.getSavedRockets().observe(viewLifecycleOwner) {
-
             rocketsAdapter.differ.submitList(it.toList())
         }
+    }
 
+    private fun initNavigation() {
         rocketsAdapter.setOnItemClickListener {
             findNavController().navigate(
                 FavoriteRocketsFragmentDirections.actionFavoriteRocketsFragmentToRocketDetailFragment(
@@ -39,7 +46,6 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
             )
         }
     }
-
 
     private fun setupRecyclerView() {
         rocketsAdapter = RocketsAdapter(this)
@@ -61,13 +67,12 @@ class FavoriteRocketsFragment : Fragment(R.layout.fragment_favorite_rockets), Fa
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
     override fun onClickFavorite(rockets: Rockets) {
         checkFavorite(rockets)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

@@ -1,4 +1,4 @@
-package com.ns.spacex.data
+package com.ns.spacex.data.local
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

@@ -1,26 +1,20 @@
 package com.ns.spacex.ui.home.favorite_rockets
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.ns.spacex.data.RocketDatabase
 import com.ns.spacex.model.Rockets
 import com.ns.spacex.repository.RoomRepository
 import com.ns.spacex.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FavoriteRocketsViewModel(
-    application: Application
-) : AndroidViewModel(application) {
-
-    private val repository: RoomRepository
-
-    init {
-        val dao = RocketDatabase.invoke(application).getRocketDao()
-        repository = RoomRepository(dao)
-    }
+@HiltViewModel
+class FavoriteRocketsViewModel @Inject constructor(
+    private val repository: RoomRepository,
+) : ViewModel() {
 
     fun getSavedRockets() = repository.getSavedRockets()
     fun deleteRocket(rockets: Rockets) = viewModelScope.launch {

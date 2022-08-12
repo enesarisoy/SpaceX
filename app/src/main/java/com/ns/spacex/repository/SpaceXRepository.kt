@@ -1,13 +1,12 @@
 package com.ns.spacex.repository
 
-import com.ns.spacex.api.RetrofitInstance
+import com.ns.spacex.data.remote.RetrofitApi
 
-class SpaceXRepository {
+class SpaceXRepository(private val retrofitApi: RetrofitApi) {
 
-    suspend fun getAllRockets() = RetrofitInstance.api.getAllRockets()
-    suspend fun getRocketDetail(id: String) = RetrofitInstance.api.getRocketDetail(id)
-    suspend fun getUpcomingLaunches() = RetrofitInstance.api.getUpcomingLaunches()
-    suspend fun getLaunchDetail(id: String) = RetrofitInstance.api.getLaunchDetail(id)
-
+    suspend fun getAllRockets() = retrofitApi.getAllRockets()
+    suspend fun getRocketDetail(id: String) = retrofitApi.getRocketDetail(id)
+    suspend fun getUpcomingLaunches() = retrofitApi.getUpcomingLaunches()
+    suspend fun getLaunchDetail(id: String) = retrofitApi.getLaunchDetail(id)
 
 }

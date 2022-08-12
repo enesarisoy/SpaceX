@@ -29,7 +29,6 @@ class UpcomingLaunchesAdapter :
         }
     }
 
-
     val differ = AsyncListDiffer(this, differCallBack)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LaunchesViewHolder =
@@ -55,7 +54,6 @@ class UpcomingLaunchesAdapter :
     }
 
     override fun getItemCount(): Int = differ.currentList.size
-
 
     private var onItemClickListener: ((UpcomingLaunchesModel) -> Unit)? = null
 

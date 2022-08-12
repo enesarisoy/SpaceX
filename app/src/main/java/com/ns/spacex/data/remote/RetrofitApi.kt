@@ -1,4 +1,4 @@
-package com.ns.spacex.api
+package com.ns.spacex.data.remote
 
 import com.ns.spacex.model.Rockets
 import com.ns.spacex.model.upcoming_launches.UpcomingLaunchesModel

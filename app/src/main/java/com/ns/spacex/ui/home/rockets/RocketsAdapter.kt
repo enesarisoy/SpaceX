@@ -12,7 +12,7 @@ import com.ns.spacex.model.Rockets
 import com.ns.spacex.util.downloadImage
 
 class RocketsAdapter(
-    private val favoriClick: FavoriClickInterface
+    private val favoriteClickInterface: FavoriteClickInterface
 ) :
     RecyclerView.Adapter<RocketsAdapter.RocketsViewHolder>() {
 
@@ -63,7 +63,7 @@ class RocketsAdapter(
                 )
             }
             btnFavorite.setOnClickListener {
-                favoriClick.onClickFavorite(rocket)
+                favoriteClickInterface.onClickFavorite(rocket)
 
             }
             holder.itemView.setOnClickListener {

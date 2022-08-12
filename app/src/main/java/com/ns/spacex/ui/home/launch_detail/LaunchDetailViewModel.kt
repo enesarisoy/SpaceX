@@ -4,11 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.ns.spacex.repository.SpaceXRepository
 import com.ns.spacex.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class LaunchDetailViewModel : ViewModel() {
+@HiltViewModel
+class LaunchDetailViewModel @Inject constructor(
+    private val repository: SpaceXRepository
+) : ViewModel() {
 
-    private val repository: SpaceXRepository = SpaceXRepository()
     fun getLaunchDetail(id: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
